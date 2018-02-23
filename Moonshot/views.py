@@ -11,8 +11,7 @@ from django.template import loader
 
 from database.functions import *
 from Moonshot.forms import UserRegistrationForm
-from Moonshot.models import QUESTION,ANSWER
-from Moonshot.forms import question
+
 
 def home(request):
     return render(request, 'home.html')
@@ -233,3 +232,12 @@ def answers_for_question(request):
         answers_array.append(answer)
 
     return render(request, "question.html", {'question':question, 'answers':answers_array, 'username':username})
+
+def guide_list(request):
+    event_id = request.GET['event_id']
+    all_guides = get_all_guides(event_id)
+    template = loader.get_template('guides.html')
+    context = {
+        'all_guides': all_guides,
+    }
+    return render(request, "guides.html", context)

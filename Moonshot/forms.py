@@ -24,7 +24,3 @@ class UserRegistrationForm(forms.Form):
         widget = forms.PasswordInput()
     )
 
-
-class question:
-    class Meta:
-        field=('question')

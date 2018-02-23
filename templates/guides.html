@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GUIDES</title>
+</head>
+<body>
+  <h3>Guides Available</h3>
+  <ul>
+    {% for guide in all_guides %}
+    <li>{{ guide.USER_KEY.NAME }}</li>
+    {% endfor %}
+  </ul>
+
+</body>
+</html>
