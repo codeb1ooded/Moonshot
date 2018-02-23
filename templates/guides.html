@@ -1,0 +1,34 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GUIDES</title>
+    <link href="{% static 'css/guides.css' %}" rel="stylesheet" type="text/css" media="all">
+</head>
+</head>
+<body>
+<div class="container">
+  <h1 align="center">Guides Available</h1>
+  <table width="100%">
+  	<tr>
+  	<th class="display">NAME</th>
+  	<th class="display">EXPERIENCE</th>
+  	<th class="display">ANSWER</th>
+  	<th class="display">GUIDE</th>
+  	</tr>
+    {% for guide in all_guides %}
+     <tr>
+    <td><div class="display">{{ guide.USER_KEY.NAME }}</div></td>
+    <td><div class="display">{{ guide.USER_KEY.EXPERIENCE_UPVOTE }}</div></td>
+    <td><div class="display">{{ guide.USER_KEY.ANSWER_UPVOTE }}</div></td>
+    <td><div class="display">{{ guide.USER_KEY.GUIDE_UPVOTE }}</div></td>
+	</tr>
+    {% endfor %}
+</table>
+</div>
+</body>
+
+</html>
+
+  

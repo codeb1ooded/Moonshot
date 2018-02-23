@@ -10,8 +10,8 @@ from .models import EXPERIENCE
 from django.template import loader
 
 from database.functions import *
-from Moonshot.forms import *
-from Moonshot.models import QUESTION,ANSWER
+from Moonshot.forms import UserRegistrationForm
+
 
 def home(request):
     return render(request, 'home.html')
@@ -104,6 +104,28 @@ def event_page(request):
                             'guides':guide_array, 'experiences':experience_array, 'questions':question_array})
 
 
+def register(request, template_name):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            userObj = form.cleaned_data
+            name = userObj['name']
+            username = userObj['username']
+            email =  userObj['email']
+            password =  userObj['password']
+            if not (User.objects.filter(username=username).exists() or User.objects.filter(email=email).exists()):
+                User.objects.create_user(username, email, password)
+                user = authenticate(username = username, password = password)
+                create_user(user, name)
+                login(request, user)
+                return HttpResponseRedirect('/')
+            else:
+                raise forms.ValidationError('Looks like a username with that email or password already exists')
+    else:
+        form = UserRegistrationForm()
+    return render(request, template_name, {'form' : form})
+
+
 def experience_list(request):
     event_id = request.GET['event_id']
     all_experiences = get_all_experiences(event_id)
@@ -185,103 +207,6 @@ def guide_event(request):
     return HttpResponse(user_guiding(username, event_id, guiding))
 
 
-def create_event_view(request):
-    if 'event_id' in request.GET:
-        event_id = request.GET['event_id']
-        name = request.GET['name']
-        description = request.GET['description']
-        reg_start_date = request.GET['reg_start_date']
-        reg_close_date = request.GET['reg_close_date']
-        event_start_date = request.GET['event_start_date']
-        event_close_date = request.GET['event_close_date']
-        details = request.GET['details']
-        website = request.GET['website']
-        location = request.GET['location']
-        if event_id == '-1':
-            event_id = create_event(name, description, reg_start_date, reg_close_date, event_start_date, event_close_date, details, website, location)
-        else:
-            event_id  = update_event(event_id, name, description, reg_start_date, reg_close_date, event_start_date, event_close_date, details, website, location)
-        print event_id
-        return HttpResponse(event_id)
-    else:
-        return render(request, 'create_event.html', {'event_id':-1})
-
-
-def update_event_view(request):
-    event_id = request.GET['event_id']
-    print "Upadte"
-    if 'name' in request.GET:
-        name = request.GET['name']
-        description = request.GET['description']
-        reg_start_date = request.GET['reg_start_date']
-        reg_close_date = request.GET['reg_close_date']
-        event_start_date = request.GET['event_start_date']
-        event_close_date = request.GET['event_close_date']
-        details = request.GET['details']
-        website = request.GET['website']
-        location = request.GET['location']
-        update_event(event_id, name, description, reg_start_date, reg_close_date, event_start_date, event_close_date, details, website, location)
-        return render(request, 'create_event.html', {'event_id':event_id, 'name':name, 'description':description,
-                                                    'reg_start_date':reg_start_date, 'reg_close_date':reg_close_date, 'event_start_date': event_start_date, 'event_close_date': event_close_date,
-                                                'details':details, 'website':website, 'location':location})
-    else:
-        event = get_event_details(event_id)
-        name = event.NAME
-        description = event.DESCRIPTION
-        reg_start_date = event.REGISTRATION_OPEN_DATE
-        reg_close_date = event.REGISTRATION_CLOSE_DATE
-        event_start_date = event.EVENT_DATE_1
-        event_close_date = event.EVENT_DATE_2
-        details = event.DETAILS
-        website = event.WEBSITE
-        location = event.LOCATION
-        update_event(event_id, name, description, reg_start_date, reg_close_date, event_start_date, event_close_date, details, website, location)
-        return render(request, 'create_event.html', {'event_id':event_id, 'name':name, 'description':description,
-                                                    'reg_start_date':reg_start_date, 'reg_close_date':reg_close_date, 'event_start_date': event_start_date, 'event_close_date': event_close_date,
-                                                'details':details, 'website':website, 'location':location})
-
-
-def register(request, template_name):
-    if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            userObj = form.cleaned_data
-            name = userObj['name']
-            username = userObj['username']
-            email =  userObj['email']
-            password =  userObj['password']
-            if not (User.objects.filter(username=username).exists() or User.objects.filter(email=email).exists()):
-                User.objects.create_user(username, email, password)
-                user = authenticate(username = username, password = password)
-                create_user(user, name)
-                login(request, user)
-                return HttpResponseRedirect('/')
-            else:
-                raise forms.ValidationError('Looks like a username with that email or password already exists')
-    else:
-        form = UserRegistrationForm()
-    return render(request, template_name, {'form' : form})
-
-
-
-def submit_answer_view(request):
-    print "Submit My answer"
-    answer_id = request.GET['answer_id']
-    question_id = request.GET['question_id']
-    answer = request.GET['answer']
-
-    is_logged_in = request.user.is_authenticated
-    username = None
-    if is_logged_in:
-        username = request.user.username
-
-    if answer_id == '-1':
-        answer_id = submit_answer(question_id, answer, username)
-    else:
-        answer_id = update_answer(question_id, answer_id, answer, username)
-    return HttpResponse(answer_id)
-
-
 def answers_for_question(request):
     question_id = request.GET['question_id']
     question = get_question(question_id)
@@ -292,12 +217,6 @@ def answers_for_question(request):
     if is_logged_in:
         username = request.user.username
 
-    ans = get_user_written_answer(username, question_id)
-    user_answer = None
-    answer_id = -1
-    if ans is not None:
-        user_answer = ans.ANSWER
-        answer_id = ans.ANSWER_ID
     answers_array = []
     for i in range(0, len(answers)):
         answer = {}
@@ -312,4 +231,13 @@ def answers_for_question(request):
             answer['is_upvoted'] = is_user_upvoted_answer(username, answers[i].ANSWER_ID)
         answers_array.append(answer)
 
-    return render(request, "question.html", {'question':question, 'answers':answers_array, 'username':username, 'answer':user_answer, 'answer_id': answer_id})
+    return render(request, "question.html", {'question':question, 'answers':answers_array, 'username':username})
+
+def guide_list(request):
+    event_id = request.GET['event_id']
+    all_guides = get_all_guides(event_id)
+    template = loader.get_template('guides.html')
+    context = {
+        'all_guides': all_guides,
+    }
+    return render(request, "guides.html", context)

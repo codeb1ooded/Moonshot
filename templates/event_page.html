@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link href="{% static 'css/layout.css' %}" rel="stylesheet" type="text/css" media="all">
-<link href="{% static 'css/event_page.css' %}" rel="stylesheet" type="text/css" media="all">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body id="top">
 <div class="topspacer bgded overlay" style="background-image:url('../images/demo/backgrounds/01.png');">
@@ -36,11 +36,11 @@
           <ul style="margin-left:30px;">
 
               {% for guide in guides %}
-                <li> <a href=""> {{ guide.guide_name }} ({{guide.reputation}}) </a> </li>
+                <li> <a href=""> {{ guide.guide_name }} ({{guide.reputation}}) </a><i class="material-icons"><a href="">&#xe0c9;</a></i></li>
               {% endfor %}
           </ul>
           <hr/>
-          <p style="margin-bottom:30px;text-align:center;"> See All </p>
+          <p style="margin-bottom:30px;text-align:center;"><a href="../guides?event_id={{ event_id }}" >See All </a></p>
       </div>
     </div>
     <!-- ################################################################################################ -->
@@ -90,8 +90,8 @@
                   </div>
               </div>
               <div style="clear:both"></div>
-              <div class="question-answer condensed-answer">{{ question.answer }} </div>
-              <div class="see-more" style="color: #00CCBD;"> See more </div>
+              <div class="condensed-answer">{{ question.answer }} </div>
+              <a href=""> See more </a>
           </div>
       {% endfor %}
     </div>
@@ -163,10 +163,6 @@
                 $('#guide-text').html("Are you guiding?");
             }
             $.get('/guiding_event/', {event_id: "{{ event_id }}", state: newstate, username: "{{ username }}"}, function(data){});
-        });
-        $('.see-more').click(function() {
-            $(this).parent().find('.question-answer').removeClass('condensed-answer');
-            $(this).remove();
         });
     });
 </script>
