@@ -233,11 +233,14 @@ def answers_for_question(request):
 
     return render(request, "question.html", {'question':question, 'answers':answers_array, 'username':username})
 
+
 def guide_list(request):
     event_id = request.GET['event_id']
+    event = get_event_details(event_id)
     all_guides = get_all_guides(event_id)
-    template = loader.get_template('guides.html')
     context = {
+        'event_id': event.EVENT_ID,
+        'event_name': event.NAME,
         'all_guides': all_guides,
     }
     return render(request, "guides.html", context)
