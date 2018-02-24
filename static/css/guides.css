@@ -1,43 +1,86 @@
-html {
-  box-sizing: border-box;
-}
+/* unimportant styles here */
+@import url(https://fonts.googleapis.com/css?family=Unica+One);
+    body {
+      background-color: gray;
+      background-image: linear-gradient(90deg, transparent 50%, rgba(255,255,255,.3) 50%);
+      background-size: 50px 50px;; background-color: gray;
+      background-image: -webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.3) 50%);
+      background-size: 50px 50px;
+    }
+    h1 {
+      font-family: 'Unica One', cursive;
+      text-align: center;
+      text-shadow: 2px 2px 2px rgba(255, 255, 255, .8);
+      margin-top: 40px;
+    }
+    a, a:hover, a:visited {
+      color: #fff;
+      display: block;
+      text-align: center;
+      text-shadow: 1px 1px 2px rgba(0,0,0,.8)
+    }
+    .container-fluid {
+      max-width: 500px;
+      margin: 20px auto;
+      border: 20px solid #efefef;
+      padding: 0;
+      background-color: #fff;
+      box-shadow: 2px 3px 5px rgba(0,0,0,.5);
+    }
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-
-body {
-  background-color: #69696969;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.1;
-}
-
-h1 {
-  margin: 0;
-  padding: 1em;
-  color: #fff;
-  background-color: #000;
-}
-
-.container {
-  position: relative;
-  width: 75%;
-  margin: 20% auto;
-
-
-
-  border: 3px dashed black;
-  background-color: #ccc;
-}
-
-.display {
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid brown;
-  color: #fff;
-  font-size: 20px;
-  background-color: grey;
-}
+    /* important styles below */
+    table {
+      width: 100%;
+    }
+    .table-wrapper {
+      overflow: hidden;
+      border-right: 1px solid #ccc;
+    }
+    .pinned {
+      width: 30%;
+      border-right: 1px solid #ccc;
+      float: left;
+    }
+    .scrollable {
+      float: right;
+      width: 69%;
+      overflow: scroll;
+      overflow-y: hidden;
+    }
+    th {
+      text-transform: uppercase;
+      line-height: 12px;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    td {
+      text-align: center;
+      vertical-align: middle;
+      overflow: hidden;
+      height: 30px;
+      white-space: nowrap;
+    }
+    .pinned td {
+      position: relative;
+      font-weight: bold;
+      line-height: 18px;
+      text-align: left;
+      overflow: hidden;
+    }
+    .pinned td.wrap {
+      white-space: normal;
+    }
+    td .outer {
+      position: relative;
+      height: 30px;
+    }
+    td .inner {
+      overflow: hidden;
+      white-space: nowrap;
+      position: absolute;
+      width: 100%;
+    }
+    .pinned td .inner.wrap {
+      white-space: normal;
+    }

@@ -7,29 +7,55 @@
     <link href="{% static 'css/guides.css' %}" rel="stylesheet" type="text/css" media="all">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-</head>
 <body>
-<div class="container">
-  <h1 align="center">Guides Available</h1>
-  <table width="100%">
-  	<tr>
-  	<th class="display">NAME</th>
-  	<th class="display">EXPERIENCE</th>
-  	<th class="display">ANSWER</th>
-  	<th class="display">GUIDE</th>
-  	</tr>
-    {% for guide in all_guides %}
-     <tr>
-    <td><div class="display">{{ guide.USER_KEY.NAME }}        <i class="material-icons"><a href="">&#xe0c9;</a></i></div></td>
-    <td><div class="display">{{ guide.USER_KEY.EXPERIENCE_UPVOTE }}</div></td>
-    <td><div class="display">{{ guide.USER_KEY.ANSWER_UPVOTE }}</div></td>
-    <td><div class="display">{{ guide.USER_KEY.GUIDE_UPVOTE }}</div></td>
-	</tr>
-    {% endfor %}
-</table>
+<h1>Guides Available</h1>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="table-wrapper">
+        <div class="pinned">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for guide in all_guides %}
+              <tr>
+                <td>
+                  {{ guide.USER_KEY.NAME }}        <i class="material-icons"><a href="">&#xe0c9;</a></i>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="scrollable">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>EXPERIENCE</th>
+                <th>ANSWER</th>
+                <th>GUIDE</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for guide in all_guides %}
+              <tr>
+                <td>{{ guide.USER_KEY.EXPERIENCE_UPVOTE }}</td>
+                <td>{{ guide.USER_KEY.ANSWER_UPVOTE }}</td>
+                <td>{{ guide.USER_KEY.GUIDE_UPVOTE }}</td>
+              </tr>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
 </body>
-
 </html>
-
-  
